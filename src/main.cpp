@@ -4,10 +4,11 @@
 #include "file.hpp"
 #include <fmt/core.h>
 #include "color.h"
+#include <span>
 
 namespace std_fs = std::filesystem;
 
-static inline size_t getSum(const std::vector<std::pair<std::string_view, std::size_t>> &results)
+static inline size_t getSum(const std::vector<std::pair<std::string, std::size_t>> &results)
 {
     size_t sum {};
     for (const auto &pair: results)
@@ -17,6 +18,31 @@ static inline size_t getSum(const std::vector<std::pair<std::string_view, std::s
 
 static inline constexpr double getPercentage(size_t numerator, size_t denominator) {
     return static_cast<double>(numerator)/static_cast<double>(denominator)*100.0;
+}
+
+static inline constexpr bool isInQuotations(std::string_view str) {
+    return str.starts_with('\"') && str.ends_with('\"');
+}
+
+/**
+ * Given a list of arguments, this function returns a 
+ * vector with all of the file categories the user wants
+ * to list.
+ */
+static std::vector<std::string> gatherFilesToList(std::vector<std::string_view> &args)
+{
+    static constexpr int offset {6};
+    static constexpr int twoQuotations {2};
+    std::vector<std::string> filesToList;
+    for (std::size_t i {}; i < args.size(); ++i)
+    {
+        if (isInQuotations(args[i]) && args[i].length() > twoQuotations)
+            args[i] = args[i].substr(args[i].front() + 1, args[i].back() - 1);
+        if (args[i].length() > offset)
+            if (args[i].substr(0, offset) == "-list=")
+                filesToList.emplace_back(args[i].substr(offset, args[i].back() - offset));
+    }
+    return filesToList;
 }
 
 
@@ -31,7 +57,18 @@ int main(int argc, char **argv)
     if (!std_fs::is_directory(argv[1]))
         terminateWithError("Invalid or nonexistent directory given. Double check to make sure it exists and is valid.");
     
-    const auto results {getResults(argv[1])};
+    // Fill args into vector
+    std::vector<std::string_view> args;
+    for (int i {1}; i < argc; ++i)
+        args.emplace_back(argv[i]);
+    const auto filesToList {gatherFilesToList(args)};
+    const bool skipHiddenFiles {std::find(args.begin(), args.end(), "-skipHidden") != args.end()};
+    
+    std::vector<std::pair<std::string, std::size_t>> results;
+    if (filesToList.empty())
+        results = getResults(argv[1], skipHiddenFiles);
+    else
+        results = getResultsWithListings(argv[1], filesToList, skipHiddenFiles);
     const size_t sum {getSum(results)};
 
     static constexpr const char *selectableColors[11] {
