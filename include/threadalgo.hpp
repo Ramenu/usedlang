@@ -1,6 +1,0 @@
-#ifndef USEDLANG_THREADALGO_HPP
-#define USEDLANG_THREADALGO_HPP
-
-extern bool shouldSpawnThread
-
-#endif // USEDLANG_THREADALGO_HPP
