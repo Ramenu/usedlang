@@ -170,7 +170,7 @@
       ]
    },
    {
-      "name":"Batchfile",
+      "name":"Batch",
       "extensions":[
          ".bat",
          ".cmd"
@@ -534,12 +534,6 @@
       "extensions":[
          ".zone",
          ".arpa"
-      ]
-   },
-   {
-      "name":"DTrace",
-      "extensions":[
-         ".d"
       ]
    },
    {
@@ -1014,7 +1008,6 @@
       "name":"Hack",
       "extensions":[
          ".hack",
-         ".hh",
          ".php"
       ]
    },
@@ -1485,7 +1478,7 @@
       "name":"Makefile",
       "extensions":[
          ".mak",
-         ".d",
+         ".make",
          ".mk",
          ".mkfile"
       ]
@@ -2076,7 +2069,8 @@
          ".rpy",
          ".tac",
          ".wsgi",
-         ".xpy"
+         ".xpy",
+         ".pyc"
       ]
    },
    {
@@ -2291,7 +2285,6 @@
    {
       "name":"SQLPL",
       "extensions":[
-         ".sql",
          ".db2"
       ]
    },
@@ -2668,7 +2661,7 @@
       ]
    },
    {
-      "name":"VimL",
+      "name":"VimScript",
       "extensions":[
          ".vim"
       ]
@@ -2902,7 +2895,7 @@
       ]
    },
    {
-      "name":"desktop",
+      "name":"Desktop",
       "extensions":[
          ".desktop",
          ".desktop.in"
@@ -2973,5 +2966,37 @@
       "extensions":[
           ".jack"
       ]
+   },
+   {
+      "name":"Shared library",
+      "extensions":[
+         ".dll",
+         ".so"
+      ]
+   },
+   {
+      "name":"Static library",
+      "extensions":[
+         ".a"
+      ]
+   },
+   {
+      "name":"Zig",
+      "extensions":[
+         ".zig"
+      ]
+   },
+   {
+      "name":"Object",
+      "extensions":[
+         ".o"
+      ]
+   },
+   {
+      "name":"Photoshop",
+      "extensions":[
+         ".psd"
+      ]
    }
+
 ]
