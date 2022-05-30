@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Set the build to debug mode
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_TYPE "Release")
 
 # Set compiler
 set(CMAKE_C_COMPILER gcc)
@@ -49,7 +48,7 @@ target_compile_options(${PROGRAM_NAME} PRIVATE
 -Wimplicit-fallthrough
 -Wmissing-include-dirs
 -Wformat=2
-#-Wconversion
+-fPIC
 -Wduplicated-branches
 -Wduplicated-cond
 -Wshadow
@@ -73,8 +72,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     -DNDEBUG
     -O3
     -flto
-    -fprofile-generate=./profile # This executes the binary a few times for sample analysis (Replace with "fprofile-use=PATH" once complete)
-    -fprofile-partial-training
     -march=native)
     target_link_options(${PROGRAM_NAME} PUBLIC -flto -s)
 
