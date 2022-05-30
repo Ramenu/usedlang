@@ -18,4 +18,8 @@ foo@bar:~$ ./usedlang "Directory Name" -skipHidden
 
 Running this, Usedlang will not consider any files or directories starting with a dot.
 
+To compile the program, you'll need to download the libraries from these repositories:
+  https://github.com/fmtlib/fmt
+  https://github.com/simdjson/simdjson
+
 Usedlang is licensed under GPL v3.0, for more information see LICENSE.
