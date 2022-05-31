@@ -27,11 +27,11 @@ static inline bool canAccess(bool shouldSkipFiles, const char *fileName) {
  * its belonging file name. Returns a map with the
  * extension to file-name pairs.
  */
-static std::unordered_map<std::string, std::string> getJSONMap()
+static std::unordered_map<std::string, std::string> getJSONMap(const std::string &executablePath)
 {
     std::unordered_map<std::string, std::string> jsonMap;
     simdjson::ondemand::parser parser;
-    const auto json {simdjson::padded_string::load("./file.json")};
+    const auto json {simdjson::padded_string::load(executablePath + "/file.json")};
     simdjson::ondemand::document doc {parser.iterate(json)};
     for (simdjson::ondemand::object obj : doc)
     {
@@ -155,11 +155,11 @@ static std::vector<std::pair<std::string, std::size_t>> getSortedResults(const s
  * incrementing the file count and then returns
  * a sorted vector to the caller.
  */
-std::vector<std::pair<std::string, std::size_t>> getResults(const char *directoryPath, bool skipHiddenFiles) 
+std::vector<std::pair<std::string, std::size_t>> getResults(const char *directoryPath, bool skipHiddenFiles, const std::string &executablePath) 
 {
     std::unordered_map<std::string, std::size_t> fileCount;
 
-    const auto jsonMap {getJSONMap()};
+    const auto jsonMap {getJSONMap(executablePath)};
     iterateDirectory(jsonMap, directoryPath, fileCount, skipHiddenFiles);
 
     return getSortedResults(fileCount);
@@ -173,11 +173,12 @@ std::vector<std::pair<std::string, std::size_t>> getResults(const char *director
  */
 std::vector<std::pair<std::string, std::size_t>> getResultsWithListings(const char *directoryPath, 
                                                                         const std::vector<std::string> &filesToList, 
-                                                                        bool skipHiddenFiles) 
+                                                                        bool skipHiddenFiles,
+                                                                        const std::string &executablePath) 
 {
     std::unordered_map<std::string, std::size_t> fileCount;
 
-    const auto jsonMap {getJSONMap()};
+    const auto jsonMap {getJSONMap(executablePath)};
     iterateDirectoryAndList(jsonMap, filesToList, fileCount, directoryPath, skipHiddenFiles);
 
     return getSortedResults(fileCount);
