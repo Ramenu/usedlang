@@ -4,8 +4,15 @@
 #include "file.hpp"
 #include <fmt/core.h>
 #include "color.h"
-#include <span>
 
+#if defined(__MINGW32__) || defined(__WIN32__) || defined(WIN32) || defined(_WIN32)
+    #define WINDOWS_OS
+    #include <Libloaderapi.h>
+#elif defined(__linux__)
+    #include <libgen.h>         
+    #include <unistd.h>         
+    #include <linux/limits.h>   
+#endif
 namespace std_fs = std::filesystem;
 
 static inline size_t getSum(const std::vector<std::pair<std::string, std::size_t>> &results)
@@ -49,7 +56,7 @@ static std::vector<std::string> gatherFilesToList(std::vector<std::string_view> 
 int main(int argc, char **argv)
 {
     // Enable virtual terminal processing on Windows machines (for colored console output support)
-    #if defined(__MINGW32__) || defined(__WIN32__) || defined(WIN32) || defined(_WIN32)
+    #ifdef WINDOWS_OS
         enable_virtual_terminal_processing();
     #endif
     if (!(argc > 1))
@@ -63,12 +70,22 @@ int main(int argc, char **argv)
         args.emplace_back(argv[i]);
     const auto filesToList {gatherFilesToList(args)};
     const bool skipHiddenFiles {std::find(args.begin(), args.end(), "-skipHidden") != args.end()};
+    const char *absolutePath;
+    #ifdef __linux__
+        char result[PATH_MAX];
+        ssize_t count {readlink("/proc/self/exe", result, PATH_MAX)};
+        if (count != -1)
+            absolutePath = dirname(result);
+    /* WARNING: WINDOWS CODE UNTESTED */
+    #elif defined(WINDOWS_OS)
+        GetModuleFileName(NULL, absolutePath, MAX_PATH);
+    #endif
     
     std::vector<std::pair<std::string, std::size_t>> results;
     if (filesToList.empty())
-        results = getResults(argv[1], skipHiddenFiles);
+        results = getResults(argv[1], skipHiddenFiles, absolutePath);
     else
-        results = getResultsWithListings(argv[1], filesToList, skipHiddenFiles);
+        results = getResultsWithListings(argv[1], filesToList, skipHiddenFiles, absolutePath);
     const size_t sum {getSum(results)};
 
     static constexpr const char *selectableColors[11] {
