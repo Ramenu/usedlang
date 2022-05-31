@@ -18,4 +18,8 @@ foo@bar:~$ ./usedlang "Directory Name" -skipHidden
 
 Running this, Usedlang will not consider any files or directories starting with a dot.
 
+Currently, I have only tested this on Linux. If you're running Windows, MacOS please let me know if you have any problems. I will do my absolute
+best to fix the problem. It would work on all OS's, however the most recent update relies on platform-dependent code (the standard filesystem library
+did not help, unfortunately). I have implemented some code for Windows, but I unsure if it works. Feel free to test it yourself.
+
 Usedlang is licensed under GPL v3.0, for more information see LICENSE.
