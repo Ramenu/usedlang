@@ -38,16 +38,16 @@ static inline constexpr bool isInQuotations(std::string_view str) {
  */
 static std::vector<std::string> gatherFilesToList(std::vector<std::string_view> &args)
 {
-    static constexpr int offset {6};
-    static constexpr int twoQuotations {2};
+    static constexpr unsigned int offset {6};
+    static constexpr unsigned int twoQuotations {2};
     std::vector<std::string> filesToList;
     for (std::size_t i {}; i < args.size(); ++i)
     {
         if (isInQuotations(args[i]) && args[i].length() > twoQuotations)
-            args[i] = args[i].substr(args[i].front() + 1, args[i].back() - 1);
+            args[i] = args[i].substr(1, args[i].length() - twoQuotations);
         if (args[i].length() > offset)
             if (args[i].substr(0, offset) == "-list=")
-                filesToList.emplace_back(args[i].substr(offset, args[i].back() - offset));
+                filesToList.emplace_back(args[i].substr(offset, args[i].length() - offset));
     }
     return filesToList;
 }
