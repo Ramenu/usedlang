@@ -8,6 +8,6 @@
  */
 void terminateWithError(const char *errorMessage) 
 {
-    fmt::print(stderr, "{}FATAL ERROR:{} {}\n", COLOR_BOLDRED, COLOR_RESET, errorMessage);
+    fmt::print(stderr, COLOR_BOLDRED "FATAL ERROR: " COLOR_RESET "{}\n", errorMessage);
     exit(EXIT_FAILURE);
 }
