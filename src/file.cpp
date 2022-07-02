@@ -11,14 +11,14 @@ namespace std_fs = std::filesystem;
  * Returns true if the file category is in the list
  * of files to be displayed.
  */
-static inline bool isInFileListCategory(const std::vector<std::string> &fileList, const char *fileCategory) {
+static inline bool isInFileListCategory(const std::vector<std::string> &fileList, const char *fileCategory) noexcept {
     return (std::find(fileList.begin(), fileList.end(), fileCategory) != fileList.end());
 }
 
 /**
  * Returns true if the file/directory can be accessed.
  */
-static inline bool canAccess(bool shouldSkipFiles, const char *fileName) {
+static inline bool canAccess(bool shouldSkipFiles, const char *fileName) noexcept {
     return (shouldSkipFiles) ? fileName[0] != '.' : true;
 }
 
@@ -27,7 +27,7 @@ static inline bool canAccess(bool shouldSkipFiles, const char *fileName) {
  * its belonging file name. Returns a map with the
  * extension to file-name pairs.
  */
-static std::unordered_map<std::string, std::string> getJSONMap(const std::string &executablePath)
+static std::unordered_map<std::string, std::string> getJSONMap(const std::string &executablePath) noexcept
 {
     std::unordered_map<std::string, std::string> jsonMap;
     simdjson::ondemand::parser parser;
@@ -67,7 +67,7 @@ static inline void incrementFileCount(const std::unordered_map<std::string, std:
 static inline void incrementFileCountAndList(const std::unordered_map<std::string, std::string> &jsonMap, 
                                              const std::vector<std::string> &filesToList,
                                              std::unordered_map<std::string, std::size_t> &fileCount,
-                                             const std_fs::path &file)
+                                             const std_fs::path &file) noexcept
 {
     const std::string ext {file.extension()};
     if (jsonMap.find(ext) != jsonMap.end()) // If found
@@ -96,7 +96,7 @@ static void iterateDirectoryAndList(const std::unordered_map<std::string, std::s
                                     const std::vector<std::string> &filesToList,
                                     std::unordered_map<std::string, std::size_t> &fileCount,
                                     const char *directory,
-                                    bool skipHiddenFile)
+                                    bool skipHiddenFile) noexcept
 {
     for (const auto &entry: std_fs::directory_iterator(directory))
     {
@@ -118,7 +118,7 @@ static void iterateDirectoryAndList(const std::unordered_map<std::string, std::s
 static void iterateDirectory(const std::unordered_map<std::string, std::string> &jsonMap,
                              const char *directory,
                              std::unordered_map<std::string, std::size_t> &fileCount,
-                             bool skipHiddenFile)
+                             bool skipHiddenFile) noexcept
 {
     for (const auto &entry: std_fs::directory_iterator(directory))
     {
@@ -136,7 +136,7 @@ static void iterateDirectory(const std::unordered_map<std::string, std::string> 
  * Returns a vector sorted based on
  * highest file count.
  */
-static std::vector<std::pair<std::string, std::size_t>> getSortedResults(const std::unordered_map<std::string, std::size_t> &fileCount)
+static std::vector<std::pair<std::string, std::size_t>> getSortedResults(const std::unordered_map<std::string, std::size_t> &fileCount) noexcept
 {
     std::vector<std::pair<std::string, std::size_t>> results {fileCount.begin(), fileCount.end()};
 
@@ -155,7 +155,7 @@ static std::vector<std::pair<std::string, std::size_t>> getSortedResults(const s
  * incrementing the file count and then returns
  * a sorted vector to the caller.
  */
-std::vector<std::pair<std::string, std::size_t>> getResults(const char *directoryPath, bool skipHiddenFiles, const std::string &executablePath) 
+std::vector<std::pair<std::string, std::size_t>> getResults(const char *directoryPath, bool skipHiddenFiles, const std::string &executablePath)  noexcept
 {
     std::unordered_map<std::string, std::size_t> fileCount;
 
@@ -174,7 +174,7 @@ std::vector<std::pair<std::string, std::size_t>> getResults(const char *director
 std::vector<std::pair<std::string, std::size_t>> getResultsWithListings(const char *directoryPath, 
                                                                         const std::vector<std::string> &filesToList, 
                                                                         bool skipHiddenFiles,
-                                                                        const std::string &executablePath) 
+                                                                        const std::string &executablePath) noexcept
 {
     std::unordered_map<std::string, std::size_t> fileCount;
 
