@@ -3,6 +3,7 @@
 #include <filesystem>
 #include "file.hpp"
 #include <fmt/core.h>
+#include <algorithm>
 #include "color.h"
 
 #if defined(__MINGW32__) || defined(__WIN32__) || defined(WIN32) || defined(_WIN32)
