@@ -11,14 +11,14 @@ namespace std_fs = std::filesystem;
  * Returns true if the file category is in the list
  * of files to be displayed.
  */
-static inline bool isInFileListCategory(const std::vector<std::string> &fileList, const char *fileCategory) noexcept {
+static constexpr inline bool isInFileListCategory(const std::vector<std::string> &fileList, const char *fileCategory) noexcept {
     return (std::find(fileList.begin(), fileList.end(), fileCategory) != fileList.end());
 }
 
 /**
  * Returns true if the file/directory can be accessed.
  */
-static inline bool canAccess(bool shouldSkipFiles, const char *fileName) noexcept {
+static constexpr inline bool canAccess(bool shouldSkipFiles, const char *fileName) noexcept {
     return (shouldSkipFiles) ? fileName[0] != '.' : true;
 }
 
