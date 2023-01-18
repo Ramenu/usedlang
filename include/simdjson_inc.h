@@ -14,6 +14,7 @@
     #pragma clang diagnostic ignored "-Wsign-conversion"
     #pragma clang diagnostic ignored "-Wsuggest-override"
     #pragma clang diagnostic ignored "-Wambiguous-reversed-operator"
+    #pragma clang diagnostic ignored "-Wweak-vtables"
     #include "simdjson.h"
     #pragma clang diagnostic pop
 #else
