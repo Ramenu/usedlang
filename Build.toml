@@ -1,0 +1,10 @@
+[package]
+	name = "usedlang"
+	debug_build = false
+
+[compiler]
+	compiler = "clang++"
+
+[linker]
+	libraries = ["-lfmt","-lsimdjson"]
+
